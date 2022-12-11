@@ -7,37 +7,30 @@ export function App() {
     x: 0,
     y: 0,
   });
-  const [previousCoordinates, setPreviousCoordinates] =
-    React.useState(coordinates);
 
   async function handleMouseOver(event: any) {
     await setCoordinates({
       x: event.clientX - event.target.offsetLeft,
       y: event.clientY - event.target.offsetTop,
     });
-
-    await setPreviousCoordinates({
-      x: coordinates.x,
-      y: coordinates.y,
-    });
   }
 
   const removeCoordinates = useCallback(() => {
     setCoordinates({
-      x: previousCoordinates.x,
-      y: previousCoordinates.y,
+      x: 0,
+      y: 0,
     });
   }, []);
 
   const redoCoordinates = React.useCallback(async () => {
-    await setCoordinates({
-      x: previousCoordinates.x,
-      y: coordinates.y,
+    console.log(coordinates);
+    await setCoordinates(prev => {
+      prev.x = prev.x;
+      prev.y = prev.y;
+      return prev;
     });
+    console.log(coordinates);
   }, []);
-
-  console.log('previous Coordinates', previousCoordinates);
-  console.log('Coordinates', coordinates);
 
   return (
     <div className="wrapper" onMouseDown={handleMouseOver}>
